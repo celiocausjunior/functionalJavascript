@@ -1,26 +1,60 @@
 const fs = require('fs')
 const path = require('path')
 
-function readFile(folderPath){
-    
+function readFile(folderPath) {
+
 
     return new Promise((resolve, reject) => {
-        try{
+        try {
             let files = fs.readdirSync(folderPath)
-           files = files.map(file => path.join(folderPath, file))
-           resolve(files)
-        } catch(error){
+            files = files.map(file => path.join(folderPath, file))
+            resolve(files)
+        } catch (error) {
             reject(`Algo não funcionou: ${error}`)
         }
     })
- }
+}
 
+function readIndividualFile(filePath) {
+    return new Promise((resolve, reject) => {
+        try {
+            const content = fs.readFileSync(filePath, { encoding: 'utf-8' })
+            resolve(content.toString())
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 
- function filterFileExtension(array, extension ){
+function readAllFiles(filesPath) {
+    return Promise.all(filesPath.map(filePath => readIndividualFile(filePath)))
+}
+
+function filterFileExtension(array, extension) {
     return array.filter(el => el.endsWith(extension))
- }
+}
+
+function removeEmptyLine(array){
+    return array.filter(el => el.trim())
+}
+
+function removeCronometer(array, pattern){
+    return array.filter(el => !el.includes(pattern))
+}
+
+function removeNumbers(array) {
+    return array.filter(el => {
+        const isNumber = parseInt(el.trim())
+        return isNumber !== isNumber
+    });
+  }
 
 module.exports = {
     readFile,
-    filterFileExtension
+    filterFileExtension,
+    readIndividualFile,
+    readAllFiles,
+    removeEmptyLine,
+    removeCronometer,
+    removeNumbers
 }
