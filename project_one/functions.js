@@ -61,6 +61,11 @@ function removeNumbers(array) {
     }
   }
 
+  function mergeContent(array){
+    return array.join('')
+}
+
+
 module.exports = {
     readFile,
     filterFileExtension,
@@ -69,5 +74,6 @@ module.exports = {
     removeEmptyLine,
     removeCronometer,
     removeNumbers,
-    removeSymbols
+    removeSymbols,
+    mergeContent
 }
