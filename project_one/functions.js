@@ -49,6 +49,18 @@ function removeNumbers(array) {
     });
   }
 
+  function removeSymbols(symbols){
+    return function(array){
+        return array.map(el => {
+            let cleanedArray = el
+            symbols.forEach(symbol => {
+                cleanedArray = cleanedArray.split(symbol).join('')
+            })
+            return cleanedArray
+        })
+    }
+  }
+
 module.exports = {
     readFile,
     filterFileExtension,
@@ -56,5 +68,6 @@ module.exports = {
     readAllFiles,
     removeEmptyLine,
     removeCronometer,
-    removeNumbers
+    removeNumbers,
+    removeSymbols
 }
