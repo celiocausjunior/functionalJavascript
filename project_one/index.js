@@ -1,21 +1,27 @@
-const fn = require('./functions.js')
 const path = require('path')
+const fn = require('./functions')
 
-const folderPath = path.join(__dirname, './', 'data', 'subtitles')
+const caminho = path.join(__dirname, './', 'data', 'subtitles')
 
-const symbols = ['.', '?', '-', ',', '"', '♪', '_', '<i>', '</i>', '\r', '[', ']', '(', ')']
+const simbolos = [
+    '.', '?', '-', ',', '"', '♪',
+    '_', '<i>', '</i>', '\r', '[', ']',
+    '(', ')'
+]
 
-
-
-fn.readFile(folderPath)
-.then(files => fn.filterFileExtension(files, '.srt'))
-.then(SRTFiles => fn.readAllFiles(SRTFiles))
-.then(content => fn.mergeContent(content))
-.then(allContent => allContent.split('\n'))
-.then(allLines => fn.removeEmptyLine(allLines))
-.then(contentWithoutBlankLines => fn.removeCronometer(contentWithoutBlankLines, '-->'))
-.then(contentWithoutCronometer => fn.removeNumbers(contentWithoutCronometer))
-.then(contentWithoutNumbers => fn.removeSymbols(symbols)(contentWithoutNumbers))
-.then(cleanedContent => fn.mergeContent(cleanedContent))
-.then(mergedContent => mergedContent.split(' '))
-.then(console.log)
+fn.lerDiretorio(caminho)
+    .then(fn.elementosTerminadosCom('.srt'))
+    .then(fn.lerArquivos)
+    .then(fn.mesclarElementos)
+    .then(fn.separarTextoPor('\n'))
+    .then(fn.removerElementosSeVazio)
+    .then(fn.removerElementosSeIncluir('-->'))
+    .then(fn.removerElementosSeApenasNumero)
+    .then(fn.removerSimbolos(simbolos))
+    .then(fn.mesclarElementos)
+    .then(fn.separarTextoPor(' '))
+    .then(fn.removerElementosSeVazio)
+    .then(fn.removerElementosSeApenasNumero)
+    .then(fn.agruparElementos)
+    .then(fn.ordernarPorAtribNumerico('qtde', 'desc'))
+    .then(console.log)
